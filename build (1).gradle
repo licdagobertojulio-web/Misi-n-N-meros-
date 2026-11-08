@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.matematicasdivertidas.misionnumeros'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.matematicasdivertidas.misionnumeros"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+
+    // Firma para publicar (Play Store o APK definitivo).
+    // Se activa solo si existen estas propiedades en gradle.properties o en el entorno de compilación.
+    signingConfigs {
+        release {
+            if (project.hasProperty('MN_KEYSTORE')) {
+                storeFile file(MN_KEYSTORE)
+                storePassword MN_STORE_PASSWORD
+                keyAlias MN_KEY_ALIAS
+                keyPassword MN_KEY_PASSWORD
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (project.hasProperty('MN_KEYSTORE')) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.webkit:webkit:1.12.1'
+}
